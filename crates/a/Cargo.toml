@@ -1,0 +1,9 @@
+[package]
+name = "a"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+ioc_core = { workspace = true }
+b = { workspace = true }

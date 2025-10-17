@@ -1,0 +1,17 @@
+[workspace]
+members = [
+    "crates/*",
+    "libs/*"
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.0.1"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+
+
+[workspace.dependencies]
+ioc_core = { path = "libs/ioc_core" }
+a = { path = "crates/a" }
+b = { path = "crates/b" }
