@@ -12,6 +12,26 @@ license = "MIT OR Apache-2.0"
 
 
 [workspace.dependencies]
+ioc = { path = "libs/ioc" }
 ioc_core = { path = "libs/ioc_core" }
+ioc_macros = { path = "libs/ioc_macros" }
+
+linkme = "0.3"
+thiserror = "2"
+proc-macro2 = "1"
+quote = "1"
+darling = { version = "0.21" }
+
 a = { path = "crates/a" }
 b = { path = "crates/b" }
+
+[workspace.dependencies.syn]
+version = "2"
+features = [
+    "extra-traits",
+    "derive",
+    "parsing",
+    "printing",
+    "clone-impls",
+    "proc-macro",
+]

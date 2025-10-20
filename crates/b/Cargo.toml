@@ -5,4 +5,5 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-ioc_core = { workspace = true }
+ioc = { workspace = true }
+linkme = { workspace = true }

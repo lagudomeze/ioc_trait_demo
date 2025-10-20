@@ -1,9 +1,10 @@
 [package]
-name = "ioc_core"
+name = "ioc"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [dependencies]
-linkme = { workspace = true }
+ioc_core = { workspace = true }
 ioc_macros = { workspace = true }
+linkme = { workspace = true }
