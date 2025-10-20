@@ -7,4 +7,3 @@ license.workspace = true
 [dependencies]
 ioc_core = { workspace = true }
 ioc_macros = { workspace = true }
-linkme = { workspace = true }

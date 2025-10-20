@@ -103,14 +103,12 @@ version = "0.0.1"
 dependencies = [
  "ioc_core",
  "ioc_macros",
- "linkme",
 ]
 
 [[package]]
 name = "ioc_core"
 version = "0.0.1"
 dependencies = [
- "ioc_macros",
  "linkme",
 ]
 
