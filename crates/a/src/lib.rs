@@ -1,5 +1,6 @@
 use b::B;
-use ioc_core::{Alias, Context, Ctx, Registered};
+use ioc::Bean;
+use ioc::prelude::*;
 
 #[allow(non_camel_case_types)]
 pub struct _trait_a_key_;
@@ -21,16 +22,8 @@ where
 {
 }
 
+#[derive(Debug, Bean)]
 pub struct SomeNeedA;
-
-unsafe impl Registered<SomeNeedA> for Ctx {
-    type Bean = SomeNeedA;
-
-    #[inline(always)]
-    fn get(_: &Ctx) -> &Self::Bean {
-        &SomeNeedA
-    }
-}
 
 impl SomeNeedA {
     pub fn test2<C>(&self, ctx: &C)

@@ -1,11 +1,10 @@
-extern crate core;
-
 use crate::mod2::AliasHaha;
 use a::{_trait_a_key_, A, SomeNeedA};
-use ioc_core::{self, Alias, Context, Ctx as Root, Registered};
+use ioc::Bean;
+use ioc::prelude::*;
 
 pub mod module {
-    use ioc_core::Ctx as Root;
+    use crate::Ctx as Root;
     use std::ops::Deref;
 
     #[derive(Debug)]
@@ -24,6 +23,7 @@ pub mod module {
     }
 }
 
+#[derive(Debug, Bean)]
 pub struct AImplByMain;
 
 impl A for AImplByMain {
@@ -32,22 +32,13 @@ impl A for AImplByMain {
     }
 }
 
-unsafe impl Registered<AImplByMain> for Root {
-    type Bean = AImplByMain;
-
-    #[inline(always)]
-    fn get(_: &Root) -> &Self::Bean {
-        &AImplByMain
-    }
-}
-
 impl Alias<_trait_a_key_> for module::Ctx {
     type Key = AImplByMain;
 }
 
 pub mod mod2 {
+    use crate::{Alias, Ctx as Root};
     use a::SomeNeedA;
-    use ioc_core::{Alias, Ctx as Root};
     use std::ops::Deref;
 
     pub struct Mod2(pub Root);
@@ -80,9 +71,12 @@ pub mod mod2 {
 }
 
 fn main() {
-    let _ctx = module::new(Root);
+    use crate::Ctx as Root;
+    let ctx = Root::new().unwrap();
 
-    let ctx = mod2::Mod2(Root);
+    // let _ctx = module::new(ctx);
+
+    let ctx = mod2::Mod2(ctx);
 
     let some_need_a = ctx.get_by_key::<AImplByMain>();
 
