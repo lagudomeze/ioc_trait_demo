@@ -1,7 +1,13 @@
+use crate::config::CfgParams;
+use std::ops::{Deref, DerefMut};
+
+pub mod config;
+pub mod error;
+pub mod init;
 pub mod life;
 pub mod place;
 
-use std::ops::{Deref, DerefMut};
+pub type Result<T> = std::result::Result<T, error::Error>;
 
 pub trait Alias<Name> {
     type Key;
@@ -39,7 +45,7 @@ pub unsafe trait Registered<K: ?Sized> {
 pub mod link {
     use crate::life;
 
-    pub type InitMethod = fn(&mut life::InitPhase);
+    pub type InitMethod = fn(ctx: &mut crate::init::InitCtx) -> crate::Result<()>;
 
     #[linkme::distributed_slice]
     pub static INIT_METHODS: [InitMethod] = [..];
@@ -61,14 +67,22 @@ pub struct Ctx {
 }
 
 impl Ctx {
-    pub fn new() -> Option<Self> {
+    pub fn new() -> Result<Self> {
+        Self::from_cfg(CfgParams::default())
+    }
+
+    pub fn from_cfg(param: CfgParams) -> Result<Self> {
+        use crate::config::CfgSource;
         use crate::link::{INIT_METHODS, POST_INIT_METHODS};
 
-        let mut phase = life::InitPhase::take()?;
+        let phase = life::InitPhase::take()?;
+        let cfg_source = CfgSource::new(param)?;
+        let mut ctx = init::InitCtx::new(phase, cfg_source);
 
         for method in INIT_METHODS {
-            method(&mut phase);
+            method(&mut ctx)?;
         }
+        let phase = ctx.into_phase();
 
         let mut phase = unsafe { phase.complete() };
 
@@ -76,7 +90,7 @@ impl Ctx {
             method(&mut phase);
         }
 
-        Some(Ctx { phase })
+        Ok(Ctx { phase })
     }
 }
 

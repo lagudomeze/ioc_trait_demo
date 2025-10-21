@@ -1,13 +1,15 @@
 use ioc::Bean;
 use ioc::prelude::*;
 
-
 #[derive(Debug, Bean)]
-pub struct B;
+pub struct B {
+    #[rivete(config(name = "bbb.name"))]
+    name: String,
+}
 
 impl B {
     pub fn test(&self) -> &'static str {
-        println!("test b");
+        println!("test b! this is {}", self.name);
         "hello this is b"
     }
     pub fn test2(&self, ctx: &Ctx) {
@@ -22,6 +24,8 @@ mod tests {
 
     #[test]
     fn test_b() {
+        env_logger::init();
+
         let ctx = Ctx::new().unwrap();
         let x = &ctx;
 

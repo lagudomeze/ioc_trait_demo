@@ -1,5 +1,5 @@
 [package]
-name = "cmd"
+name = "a"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -7,4 +7,4 @@ license.workspace = true
 [dependencies]
 ioc = { workspace = true }
 linkme = { workspace = true }
-a = { workspace = true }
+b = { path = "../b" }

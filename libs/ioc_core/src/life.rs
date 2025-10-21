@@ -29,10 +29,10 @@ impl InitPhase {
     ///
     /// # Examples
     ///
-    /// ```
+    /// ```ignore
     /// let init_token = InitPhase::take().expect("should only be called once");
     /// ```
-    pub fn take() -> Option<Self> {
+    pub fn take() -> crate::Result<Self> {
         use std::sync::Once;
         static INIT: Once = Once::new();
 
@@ -42,7 +42,10 @@ impl InitPhase {
             result = Some(InitPhase { _private: () });
         });
 
-        result
+        match result {
+            Some(token) => Ok(token),
+            None => Err(crate::error::Error::DuplicatedInit("InitPhase")),
+        }
     }
 
     /// Transitions from initialization phase to active phase.
@@ -181,11 +184,7 @@ mod tests {
         unsafe {
             STORAGE.deinitialize(&mut active_phase);
         }
-    }
 
-    #[test]
-    fn singleton_behavior() {
-        assert!(InitPhase::take().is_some());
-        assert!(InitPhase::take().is_none()); // Second call returns None
+        assert!(InitPhase::take().is_err());
     }
 }

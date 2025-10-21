@@ -1,7 +1,8 @@
 [workspace]
 members = [
     "crates/*",
-    "libs/*"
+    "libs/*",
+    "examples/*",
 ]
 resolver = "2"
 
@@ -18,12 +19,11 @@ ioc_macros = { path = "libs/ioc_macros" }
 
 linkme = "0.3"
 thiserror = "2"
+anyhow = "1"
 proc-macro2 = "1"
 quote = "1"
 darling = { version = "0.21" }
-
-a = { path = "crates/a" }
-b = { path = "crates/b" }
+cfg-rs = "0.6"
 
 [workspace.dependencies.syn]
 version = "2"

@@ -6,3 +6,6 @@ license.workspace = true
 
 [dependencies]
 linkme = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+cfg-rs = { workspace = true , features = ["default", "log", "toml"]}
