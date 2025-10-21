@@ -7,8 +7,9 @@ pub(crate) struct Named {
     pub default: Option<Expr>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Default)]
 pub(crate) enum Config {
+    #[default]
     Default,
     Trivial,
     Named(Named),
@@ -35,11 +36,6 @@ impl FromMeta for Config {
     }
 }
 
-impl Default for Config {
-    fn default() -> Self {
-        Config::Default
-    }
-}
 
 #[cfg(test)]
 mod tests {

@@ -50,6 +50,6 @@ impl SomeNeedA {
         a.test();
         let b = ctx.get_by_key::<B>();
         println!("{}", b.test());
-        b.test2(&ctx);
+        b.test2(ctx);
     }
 }

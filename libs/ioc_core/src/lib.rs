@@ -34,6 +34,10 @@ pub trait Context: Deref<Target = Ctx> {
 
 impl<C> Context for C where C: Deref<Target = Ctx> {}
 
+/// # Safety
+/// This trait is unsafe because incorrect implementation may lead to undefined behavior.
+/// Must need add link section to register the bean.
+/// see [linkme](https://crates.io/crates/linkme) and [link mod](link) for more details.
 pub unsafe trait Registered<K: ?Sized> {
     type Bean;
 
