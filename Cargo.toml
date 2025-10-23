@@ -28,6 +28,7 @@ cfg-rs = "0.6"
 [workspace.dependencies.syn]
 version = "2"
 features = [
+    "full",
     "extra-traits",
     "derive",
     "parsing",
@@ -35,3 +36,6 @@ features = [
     "clone-impls",
     "proc-macro",
 ]
+
+[workspace.dependencies.prettyplease]
+version = "0.2"

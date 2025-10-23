@@ -1,52 +1,37 @@
 use b::B;
 use ioc::Bean;
 use ioc::prelude::*;
-
-#[allow(non_camel_case_types)]
-pub struct _trait_a_key_;
+use ioc::with;
 
 pub trait A {
     fn test(&self);
 }
 
-pub trait HasA: Alias<_trait_a_key_>
-where
-    Ctx: Registered<<Self as Alias<_trait_a_key_>>::Key, Bean: A>,
-{
-}
-
-impl<C> HasA for C
-where
-    C: Alias<_trait_a_key_>,
-    Ctx: Registered<<C as Alias<_trait_a_key_>>::Key, Bean: A>,
-{
-}
+pub struct AKey;
 
 #[derive(Debug, Bean)]
 pub struct SomeNeedA;
 
 impl SomeNeedA {
+    #[with(bean(path = B))]
+    #[with(alias(name = AKey, traits = A))]
     pub fn test2<C>(&self, ctx: &C)
     where
         C: Context,
-        Ctx: Registered<B, Bean = B>,
-        C: Alias<_trait_a_key_>,
-        Ctx: Registered<<C as Alias<_trait_a_key_>>::Key, Bean: A>,
     {
         let b = ctx.get_by_key::<B>();
         println!("{}", b.test());
         self.test(ctx);
     }
 
-    pub fn test<C>(&self, ctx: &C)
+    pub fn test<Cxx>(&self, ctx: &Cxx)
     where
-        C: Context,
+        Cxx: Context,
         Ctx: Registered<B, Bean = B>,
-        C: Alias<_trait_a_key_>,
-        Ctx: Registered<<C as Alias<_trait_a_key_>>::Key, Bean: A>,
-        //todo: Ctx: Registered<SomeNeedA, Bean = SomeNeedA>,
+        Cxx: Alias<AKey>,
+        Ctx: Registered<<Cxx as Alias<AKey>>::Key, Bean: A>
     {
-        let a = ctx.get_by_alias::<_trait_a_key_>();
+        let a = ctx.get_by_alias::<AKey>();
         a.test();
         let b = ctx.get_by_key::<B>();
         println!("{}", b.test());

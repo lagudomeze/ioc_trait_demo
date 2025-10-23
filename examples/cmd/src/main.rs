@@ -1,5 +1,5 @@
 use crate::mod2::AliasHaha;
-use a::{_trait_a_key_, A, SomeNeedA};
+use a::{A, AKey, SomeNeedA};
 use ioc::Bean;
 use ioc::prelude::*;
 
@@ -32,7 +32,7 @@ impl A for AImplByMain {
     }
 }
 
-impl Alias<_trait_a_key_> for module::Ctx {
+impl Alias<AKey> for module::Ctx {
     type Key = AImplByMain;
 }
 
@@ -82,7 +82,7 @@ fn main() {
 
     some_need_a.test();
 
-    let some_need_a = ctx.get_by_alias::<_trait_a_key_>();
+    let some_need_a = ctx.get_by_alias::<AKey>();
 
     some_need_a.test();
 
