@@ -24,12 +24,11 @@ impl SomeNeedA {
         self.test(ctx);
     }
 
+    #[with(bean(path = B))]
+    #[with(alias(context = Cxx,  name = AKey, traits = A))]
     pub fn test<Cxx>(&self, ctx: &Cxx)
     where
         Cxx: Context,
-        Ctx: Registered<B, Bean = B>,
-        Cxx: Alias<AKey>,
-        Ctx: Registered<<Cxx as Alias<AKey>>::Key, Bean: A>
     {
         let a = ctx.get_by_alias::<AKey>();
         a.test();

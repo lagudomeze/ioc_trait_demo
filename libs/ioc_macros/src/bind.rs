@@ -1,5 +1,4 @@
 use darling::FromMeta;
-use quote::ToTokens;
 use syn::{Expr, Generics, Token, Type, TypeParamBound, parse_quote, punctuated::Punctuated};
 
 #[derive(Debug, PartialEq, FromMeta)]
