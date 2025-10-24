@@ -25,7 +25,7 @@ impl SomeNeedA {
     }
 
     #[with(bean(path = B))]
-    #[with(alias(context = Cxx,  name = AKey, traits = A))]
+    #[with(alias(context = Cxx, name = AKey, traits = A))]
     pub fn test<Cxx>(&self, ctx: &Cxx)
     where
         Cxx: Context,

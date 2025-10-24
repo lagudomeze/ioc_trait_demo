@@ -1,7 +1,11 @@
 mod config;
 mod field;
+mod alias;
 
-use crate::bean::field::Field;
+use crate::{
+    bean::field::Field,
+    bean::alias::Alias
+};
 use darling::{Error, FromDeriveInput, Result, ast::Data, ast::Style};
 use proc_macro2::{Ident, TokenStream};
 use quote::{ToTokens, format_ident, quote};
@@ -24,6 +28,7 @@ pub(crate) fn resolve_ioc_crate(ioc_crate: &Option<Path>) -> Result<TokenStream>
 }
 
 #[derive(Debug, FromDeriveInput)]
+#[darling(attributes(rivete))]
 pub(crate) struct Bean {
     /// The struct ident.
     ident: Ident,
@@ -31,6 +36,9 @@ pub(crate) struct Bean {
     /// Receives the body of the struct or enum. We don't care about
     /// struct fields because we previously told darling we only accept structs.
     data: Data<(), Field>,
+
+    #[darling(default)]
+    alias: Option<Alias>,
 
     #[darling(default)]
     name: Option<String>,
@@ -96,6 +104,7 @@ impl Bean {
             ref ident,
             ref data,
             ref name,
+            ref alias,
             ref ioc_crate,
         } = *self;
 
@@ -116,6 +125,12 @@ impl Bean {
         };
 
         let mod_ident = format_ident!("{}_bean_register", key.to_string().to_lowercase());
+
+        let alias_impl = if let Some(alias) = alias {
+            alias.generate(ident, &ioc)?
+        } else {
+            quote! {}
+        };
 
         Ok(quote! {
             pub mod #mod_ident {
@@ -159,6 +174,8 @@ impl Bean {
                     }
                 }
             }
+
+            #alias_impl
         })
     }
 }

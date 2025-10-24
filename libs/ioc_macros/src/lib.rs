@@ -1,5 +1,6 @@
 mod bean;
 mod bind;
+mod context;
 
 use darling::FromDeriveInput;
 use proc_macro::TokenStream;
@@ -22,11 +23,6 @@ pub fn with(attr: TokenStream, item: TokenStream) -> TokenStream {
     input.into_token_stream().into()
 }
 
-#[proc_macro_attribute]
-pub fn with_trait(_attr: TokenStream, _item: TokenStream) -> TokenStream {
-    todo!()
-}
-
 #[proc_macro_derive(Bean, attributes(rivete))]
 pub fn bean(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
@@ -34,4 +30,9 @@ pub fn bean(input: TokenStream) -> TokenStream {
         Ok(bean_struct) => bean_struct.into_token_stream().into(),
         Err(err) => err.write_errors().into(),
     }
+}
+
+#[proc_macro_derive(Context, attributes(rivete))]
+pub fn context(input: TokenStream) -> TokenStream {
+    unimplemented!()
 }

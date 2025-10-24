@@ -24,16 +24,12 @@ pub mod module {
 }
 
 #[derive(Debug, Bean)]
+#[rivete(alias(name = AKey, ctx = module::Ctx))]
 pub struct AImplByMain;
-
 impl A for AImplByMain {
     fn test(&self) {
         println!("AImplByMain");
     }
-}
-
-impl Alias<AKey> for module::Ctx {
-    type Key = AImplByMain;
 }
 
 pub mod mod2 {
